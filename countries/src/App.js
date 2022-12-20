@@ -30,7 +30,10 @@ function App() {
         {filterCountries.length === 1 ? (
           <OneCountry filterCountry={filterCountries[0]} />
         ) : filterCountries.length < 10 ? (
-          <SeveralCountries filterCountries={filterCountries} />
+          <SeveralCountries
+            filterCountries={filterCountries}
+            setFilterCountries={setFilterCountries}
+          />
         ) : (
           <span>Too many matches, specify another filter</span>
         )}
