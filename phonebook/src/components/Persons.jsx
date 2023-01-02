@@ -1,10 +1,14 @@
 import React from "react";
 import List from "./List";
 
-const Persons = ({ filterNames, persons, state }) => {
+const Persons = ({ filterNames, persons, state, handleDelete }) => {
   return (
     <>
-      {state ? <List listNames={filterNames} /> : <List listNames={persons} />}
+      {state ? (
+        <List listNames={filterNames} handleDelete={handleDelete} />
+      ) : (
+        <List listNames={persons} handleDelete={handleDelete} />
+      )}
     </>
   );
 };

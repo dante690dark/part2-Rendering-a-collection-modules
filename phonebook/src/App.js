@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import registry from "./services/registry";
 import "./style.css";
 
 const App = () => {
@@ -13,9 +13,7 @@ const App = () => {
   const [filterNames, setFilterNames] = useState(persons);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
-    });
+    registry.getAllRegistry().then((allData) => setPersons(allData));
   }, []);
 
   const handleName = ({ target: { value } }) => {
@@ -45,10 +43,15 @@ const App = () => {
       return;
     }
 
-    setPersons((prevState) => [
-      ...prevState,
-      { name: newName, number: newPhone, id: persons.length + 1 },
-    ]);
+    const newEntry = {
+      name: newName,
+      number: newPhone,
+      id: persons.length + 1,
+    };
+
+    registry
+      .addRegistry(newEntry)
+      .then((newData) => setPersons((prevState) => [...prevState, newData]));
 
     clearFields(event);
   };
@@ -63,6 +66,23 @@ const App = () => {
 
     value === "" ? setState(false) : setState(true);
   };
+
+  const handleDelete = (index) => {
+    if (!window.confirm("Do you really want to leave?")) {
+      return;
+    }
+
+    // FIXME: fix the id when delete a registry
+    const findObject = persons.find((element) => element.id === index);
+    registry
+      .deleteRegistry(findObject, index)
+      .then(() =>
+        setPersons((prevState) =>
+          [...prevState].filter((element) => element.id !== index)
+        )
+      );
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -77,7 +97,12 @@ const App = () => {
 
       <h2>Numbers</h2>
       <ul>
-        <Persons filterNames={filterNames} persons={persons} state={state} />
+        <Persons
+          filterNames={filterNames}
+          persons={persons}
+          state={state}
+          handleDelete={handleDelete}
+        />
       </ul>
     </div>
   );
