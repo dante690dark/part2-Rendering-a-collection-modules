@@ -6,14 +6,17 @@ import registry from "./services/registry";
 import "./style.css";
 
 const App = () => {
-  const [state, setState] = useState(false);
   const [persons, setPersons] = useState([]);
+  const [state, setState] = useState(false);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [filterNames, setFilterNames] = useState(persons);
 
   useEffect(() => {
-    registry.getAllRegistry().then((allData) => setPersons(allData));
+    registry
+      .getAllRegistry()
+      .then((allData) => setPersons(allData))
+      .catch((error) => console.error(error.message));
   }, []);
 
   const handleName = ({ target: { value } }) => {
@@ -29,6 +32,7 @@ const App = () => {
     setNewPhone(event.target.reset());
   };
 
+  // add a new name
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -46,16 +50,18 @@ const App = () => {
     const newEntry = {
       name: newName,
       number: newPhone,
-      id: persons.length + 1,
+      id: persons.length ? persons[persons.length - 1].id + 1 : 1,
     };
 
     registry
       .addRegistry(newEntry)
-      .then((newData) => setPersons((prevState) => [...prevState, newData]));
+      .then((newData) => setPersons((prevState) => [...prevState, newData]))
+      .catch((error) => console.error(error.message));
 
     clearFields(event);
   };
 
+  // filter a name
   const handleFilter = ({ target: { value } }) => {
     const names = persons.filter(({ name }) => {
       if (value === "") return persons;
@@ -67,12 +73,14 @@ const App = () => {
     value === "" ? setState(false) : setState(true);
   };
 
+  // delete a name
   const handleDelete = (index) => {
-    if (!window.confirm("Do you really want to leave?")) {
+    const result = persons.find((element) => element.id === index);
+
+    if (!window.confirm(`Delete ${result.name}`)) {
       return;
     }
 
-    // FIXME: fix the id when delete a registry
     const findObject = persons.find((element) => element.id === index);
     registry
       .deleteRegistry(findObject, index)
@@ -80,7 +88,8 @@ const App = () => {
         setPersons((prevState) =>
           [...prevState].filter((element) => element.id !== index)
         )
-      );
+      )
+      .catch((error) => console.error(error.message));
   };
 
   return (
