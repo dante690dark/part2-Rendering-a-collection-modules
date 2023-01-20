@@ -75,15 +75,15 @@ const App = () => {
 
   // delete a name
   const handleDelete = (index) => {
-    const result = persons.find((element) => element.id === index);
+    const findName = persons.find((element) => element.id === index);
 
-    if (!window.confirm(`Delete ${result.name}`)) {
+    if (!window.confirm(`Delete ${findName.name}`)) {
       return;
     }
 
-    const findObject = persons.find((element) => element.id === index);
+    const findRegistry = persons.find((element) => element.id === index);
     registry
-      .deleteRegistry(findObject, index)
+      .deleteRegistry(findRegistry, index)
       .then(() =>
         setPersons((prevState) =>
           [...prevState].filter((element) => element.id !== index)

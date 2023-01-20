@@ -1,8 +1,6 @@
 import React from "react";
 
 const List = ({ listNames, handleDelete }) => {
-  // TODO: add state for change the button's color
-
   return (
     <>
       {listNames.map(({ name, number, id }) => (
