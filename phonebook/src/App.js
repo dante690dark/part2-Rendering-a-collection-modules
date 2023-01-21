@@ -7,10 +7,10 @@ import "./style.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [state, setState] = useState(false);
+  const [hasFiltered, setHasFiltered] = useState(false);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
-  const [filterNames, setFilterNames] = useState(persons);
+  const [filterPersons, setFilterPersons] = useState(persons);
 
   useEffect(() => {
     registry
@@ -68,9 +68,9 @@ const App = () => {
       return name.toLowerCase().includes(value.toLowerCase().trim());
     });
 
-    setFilterNames(names);
+    setFilterPersons(names);
 
-    value === "" ? setState(false) : setState(true);
+    value === "" ? setHasFiltered(false) : setHasFiltered(true);
   };
 
   // delete a name
@@ -84,11 +84,19 @@ const App = () => {
     const findRegistry = persons.find((element) => element.id === index);
     registry
       .deleteRegistry(findRegistry, index)
-      .then(() =>
-        setPersons((prevState) =>
-          [...prevState].filter((element) => element.id !== index)
-        )
-      )
+      .then(() => {
+        if (!hasFiltered) {
+          setPersons((prevState) =>
+            [...prevState].filter((element) => element.id !== index)
+          );
+        } else {
+          setFilterPersons((prevState) =>
+            [...prevState].filter((element) => element.id !== index)
+          );
+
+          setPersons([...filterPersons]);
+        }
+      })
       .catch((error) => console.error(error.message));
   };
 
@@ -107,9 +115,9 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         <Persons
-          filterNames={filterNames}
           persons={persons}
-          state={state}
+          filterPersons={filterPersons}
+          hasFiltered={hasFiltered}
           handleDelete={handleDelete}
         />
       </ul>
