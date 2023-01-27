@@ -75,13 +75,12 @@ const App = () => {
 
   // delete a name
   const handleDelete = (index) => {
-    const findName = persons.find((element) => element.id === index);
+    const findRegistry = persons.find((element) => element.id === index);
 
-    if (!window.confirm(`Delete ${findName.name}`)) {
+    if (!window.confirm(`Delete ${findRegistry.name}`)) {
       return;
     }
 
-    const findRegistry = persons.find((element) => element.id === index);
     registry
       .deleteRegistry(findRegistry, index)
       .then(() => {
@@ -94,7 +93,9 @@ const App = () => {
             [...prevState].filter((element) => element.id !== index)
           );
 
-          setPersons([...filterPersons]);
+          setPersons((prevState) =>
+            [...prevState].filter((element) => element.id !== index)
+          );
         }
       })
       .catch((error) => console.error(error.message));
