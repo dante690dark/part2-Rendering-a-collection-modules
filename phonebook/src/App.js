@@ -32,7 +32,7 @@ const App = () => {
     setNewPhone(event.target.reset());
   };
 
-  // add a new name
+  // add a new registry
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -69,7 +69,7 @@ const App = () => {
     clearFields(event);
   };
 
-  // filter a name
+  // filter by name
   const handleFilter = ({ target: { value } }) => {
     const names = persons.filter(({ name }) => {
       if (value === "") return persons;
@@ -81,7 +81,7 @@ const App = () => {
     value === "" ? setHasFiltered(false) : setHasFiltered(true);
   };
 
-  // delete a name
+  // delete a registry
   const handleDelete = (index) => {
     const findRegistry = persons.find((element) => element.id === index);
 
