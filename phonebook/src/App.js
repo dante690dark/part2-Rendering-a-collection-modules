@@ -36,14 +36,22 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (
-      persons.some(
-        ({ name }) =>
-          name.toLocaleLowerCase() === newName.toLocaleLowerCase().trim()
-      )
-    ) {
-      alert(`${newName.trim()} is already added to phonebook`);
-      clearFields(event);
+    const fingRegistry = persons.find(
+      ({ name }) =>
+        name.toLocaleLowerCase() === newName.toLocaleLowerCase().trim()
+    );
+
+    if (fingRegistry) {
+      if (
+        window.confirm(
+          `${fingRegistry.name.trim()} is already added to phonebook, replace the old number with a new one`
+        )
+      ) {
+        updatePhone(fingRegistry);
+        clearFields(event);
+        return;
+      }
+
       return;
     }
 
@@ -82,7 +90,7 @@ const App = () => {
     }
 
     registry
-      .deleteRegistry(findRegistry, index)
+      .deleteRegistry(index)
       .then(() => {
         if (!hasFiltered) {
           setPersons((prevState) =>
@@ -95,6 +103,36 @@ const App = () => {
 
           setPersons((prevState) =>
             [...prevState].filter((element) => element.id !== index)
+          );
+        }
+      })
+      .catch((error) => console.error(error.message));
+  };
+
+  // update the phone
+  const updatePhone = (param) => {
+    const updatedParam = { ...param, number: newPhone };
+
+    registry
+      .updateRegistry(updatedParam, updatedParam.id)
+      .then((returnedParam) => {
+        if (!hasFiltered) {
+          setPersons((prevState) =>
+            [...prevState].map((element) =>
+              element.id !== param.id ? element : returnedParam
+            )
+          );
+        } else {
+          setFilterPersons((prevState) =>
+            [...prevState].map((element) =>
+              element.id !== param.id ? element : returnedParam
+            )
+          );
+
+          setPersons((prevState) =>
+            [...prevState].map((element) =>
+              element.id !== param.id ? element : returnedParam
+            )
           );
         }
       })

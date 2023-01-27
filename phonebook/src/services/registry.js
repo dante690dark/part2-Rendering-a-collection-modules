@@ -11,8 +11,13 @@ const addRegistry = (data) => {
   return request.then((response) => response.data);
 };
 
-const deleteRegistry = (data, id) => {
-  const request = axios.delete(`${baseUrl}/${id}`, data);
+const deleteRegistry = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request.then((response) => response.data);
+};
+
+const updateRegistry = (data, id) => {
+  const request = axios.put(`${baseUrl}/${id}`, data);
   return request.then((response) => response.data);
 };
 
@@ -20,6 +25,7 @@ const registry = {
   getAllRegistry,
   addRegistry,
   deleteRegistry,
+  updateRegistry,
 };
 
 export default registry;
