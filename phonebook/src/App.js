@@ -8,12 +8,12 @@ import "./style.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [hasFiltered, setHasFiltered] = useState(false);
-  const [stateMessages, setStateMessages] = useState(true);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
-  const [message, setMessage] = useState("");
   const [filterPersons, setFilterPersons] = useState(persons);
+  const [hasFiltered, setHasFiltered] = useState(false);
+  const [message, setMessage] = useState("");
+  const [stateMessages, setStateMessages] = useState(true);
 
   useEffect(() => {
     registry
