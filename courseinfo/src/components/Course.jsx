@@ -1,11 +1,17 @@
-import Content from "./Content";
-import Header from "./Header";
+import Content from './Content';
+import Header from './Header';
 
-const Course = ({ course: { name, parts } }) => {
+const Course = ({ course }) => {
   return (
     <>
-      <Header name={name} />
-      <Content parts={parts} />
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+        {course.map((e) => (
+          <li key={e.name}>
+            <Header name={e.name} />
+            <Content parts={e.parts} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
