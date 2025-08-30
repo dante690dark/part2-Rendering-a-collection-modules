@@ -1,11 +1,15 @@
-import React from 'react';
-
-const Part = ({ part, exercises }) => {
+const Part = ({ parts }) => {
   return (
     <>
-      <p>
-        {part} {exercises}
-      </p>
+      <ul>
+        {parts.map(({ name, exercises }) => (
+          <li key={name}>
+            <p>
+              {name} {exercises}
+            </p>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import Title from './components/title';
 import Course from './components/Course';
+import './styles.css';
 
 const App = () => {
   const course = [

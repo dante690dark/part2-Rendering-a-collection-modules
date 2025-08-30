@@ -4,11 +4,11 @@ import Header from './Header';
 const Course = ({ course }) => {
   return (
     <>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {course.map((e) => (
-          <li key={e.name}>
-            <Header name={e.name} />
-            <Content parts={e.parts} />
+      <ul>
+        {course.map(({ name, parts }) => (
+          <li key={name}>
+            <Header name={name} />
+            <Content parts={parts} />
           </li>
         ))}
       </ul>
