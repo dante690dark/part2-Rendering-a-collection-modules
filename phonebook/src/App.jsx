@@ -72,21 +72,17 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {search
-          ? persons
-              .filter((person) => person.name.includes(search))
-              .map((person) => (
-                <Person
-                  key={person.name}
-                  name={person.name}
-                  number={person.number}
-                />
-              ))
-          : persons.map((person) => (
-              <Person
-                key={person.name}
-                name={person.name}
-                number={person.number}
-              />
+          ? persons.reduce((arr, { name, number }) => {
+              if (name.includes(search) || number.includes(search))
+                return [
+                  ...arr,
+                  <Person key={name} name={name} number={number} />,
+                ];
+
+              return arr;
+            }, [])
+          : persons.map(({ name, number }) => (
+              <Person key={name} name={name} number={number} />
             ))}
       </ul>
     </>
