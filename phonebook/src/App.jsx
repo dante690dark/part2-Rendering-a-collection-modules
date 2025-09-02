@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import Person from './components/Person';
+import Persons from './components/Persons';
+import PersonForm from './components/PersonForm';
 import './styles.css';
+import Filter from './components/Filter';
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -30,65 +32,18 @@ const App = () => {
   const handleChange =
     (name) =>
     ({ target: { value } }) => {
-      if (name === 'search') {
-        setSearch(value);
-      }
-
+      if (name === 'search') setSearch(value);
       setData((prevState) => ({ ...prevState, [name]: value }));
     };
 
   return (
     <>
       <h2>Phonebook</h2>
-      filter shown with
-      <input type='text' onChange={handleChange('search')} value={search} />
+      <Filter search={search} handleChange={handleChange} />
       <h2>Add new</h2>
-      <form onSubmit={addName}>
-        <div>
-          <label htmlFor='name-field'>Name:</label>
-          <input
-            type='text'
-            id='name-field'
-            onChange={handleChange('name')}
-            value={data.name}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor='number-field'>Number:</label>
-          <input
-            type='tel'
-            id='number-field'
-            onChange={handleChange('number')}
-            value={data.number}
-            pattern='[0-9\- ]+'
-            required
-          />
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+      <PersonForm data={data} handleChange={handleChange} addName={addName} />
       <h2>Numbers</h2>
-      <ul>
-        {search
-          ? persons.reduce((arr, { name, number }) => {
-              if (
-                Object.values({ name, number }).some((text) =>
-                  text.toLowerCase().includes(search)
-                )
-              )
-                return [
-                  ...arr,
-                  <Person key={name} name={name} number={number} />,
-                ];
-
-              return arr;
-            }, [])
-          : persons.map(({ name, number }) => (
-              <Person key={name} name={name} number={number} />
-            ))}
-      </ul>
+      <Persons search={search} persons={persons} />
     </>
   );
 };
