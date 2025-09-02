@@ -10,6 +10,7 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
   ]);
   const [data, setData] = useState({ name: '', number: '' });
+  const [search, setSearch] = useState('');
 
   const addName = (event) => {
     event.preventDefault();
@@ -26,23 +27,29 @@ const App = () => {
     setData({ name: '', number: '' });
   };
 
-  const handleChange = (event) => {
-    const { value, name } = event.target;
+  const handleChange =
+    (name) =>
+    ({ target: { value } }) => {
+      if (name === 'search') {
+        setSearch(value);
+      }
 
-    setData((prevState) => ({ ...prevState, [name]: value }));
-  };
+      setData((prevState) => ({ ...prevState, [name]: value }));
+    };
 
   return (
     <>
       <h2>Phonebook</h2>
+      filter shown with
+      <input type='text' onChange={handleChange('search')} value={search} />
+      <h2>Add new</h2>
       <form onSubmit={addName}>
         <div>
           <label htmlFor='name-field'>Name:</label>
           <input
             type='text'
-            name='name'
             id='name-field'
-            onChange={handleChange}
+            onChange={handleChange('name')}
             value={data.name}
             required
           />
@@ -51,9 +58,8 @@ const App = () => {
           <label htmlFor='number-field'>Number:</label>
           <input
             type='tel'
-            name='number'
             id='number-field'
-            onChange={handleChange}
+            onChange={handleChange('number')}
             value={data.number}
             pattern='[0-9\- ]+'
             required
@@ -65,9 +71,23 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => (
-          <Person key={person.name} name={person.name} number={person.number} />
-        ))}
+        {search
+          ? persons
+              .filter((person) => person.name.includes(search))
+              .map((person) => (
+                <Person
+                  key={person.name}
+                  name={person.name}
+                  number={person.number}
+                />
+              ))
+          : persons.map((person) => (
+              <Person
+                key={person.name}
+                name={person.name}
+                number={person.number}
+              />
+            ))}
       </ul>
     </>
   );
