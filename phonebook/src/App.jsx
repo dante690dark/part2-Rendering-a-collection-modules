@@ -73,7 +73,11 @@ const App = () => {
       <ul>
         {search
           ? persons.reduce((arr, { name, number }) => {
-              if (name.includes(search) || number.includes(search))
+              if (
+                Object.values({ name, number }).some((text) =>
+                  text.toLowerCase().includes(search)
+                )
+              )
                 return [
                   ...arr,
                   <Person key={name} name={name} number={number} />,
