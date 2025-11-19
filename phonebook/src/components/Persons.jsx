@@ -1,5 +1,5 @@
-import React from 'react';
-import Person from './Person';
+import React from "react";
+import Person from "./Person";
 
 const Persons = ({ search, persons }) => {
   return (

@@ -1,9 +1,12 @@
-import React from 'react';
+import React from "react";
 
-const Person = ({ name, number }) => {
+const Person = ({ name, number, handleChange }) => {
   return (
     <div>
-      {name} {number}
+      {name} {number}{" "}
+      <button type="button" onChange={handleChange}>
+        delete
+      </button>
     </div>
   );
 };
