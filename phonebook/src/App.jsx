@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import axios from "axios";
+import { getPersons, createPerson } from "./services/persons";
 import "./styles.css";
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    getPersons().then((response) => {
       setPersons([...response.data]);
     });
   }, []);
@@ -24,10 +24,13 @@ const App = () => {
       return;
     }
 
-    setPersons((prevState) => [
-      ...prevState,
-      { name: data.name, number: data.number },
-    ]);
+    createPerson(data).then((reponse) =>
+      setPersons((prevState) => [
+        ...prevState,
+        { name: reponse.data.name, number: reponse.data.number },
+      ])
+    );
+
     setData({ name: "", number: "" });
   };
 
