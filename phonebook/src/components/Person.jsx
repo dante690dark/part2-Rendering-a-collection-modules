@@ -1,12 +1,10 @@
 import React from "react";
 
-const Person = ({ name, number, handleChange }) => {
+const Person = ({ name, number }) => {
   return (
     <div>
-      {name} {number}{" "}
-      <button type="button" onChange={handleChange}>
-        delete
-      </button>
+      {name} {number}
+      <button type="button">delete</button>
     </div>
   );
 };
