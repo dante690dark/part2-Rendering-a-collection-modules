@@ -1,18 +1,20 @@
-import { useState } from 'react';
-import Persons from './components/Persons';
-import PersonForm from './components/PersonForm';
-import './styles.css';
-import Filter from './components/Filter';
+import { useEffect, useState } from "react";
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
+import axios from "axios";
+import "./styles.css";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
-  ]);
-  const [data, setData] = useState({ name: '', number: '' });
-  const [search, setSearch] = useState('');
+  const [persons, setPersons] = useState([]);
+  const [data, setData] = useState({ name: "", number: "" });
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons([...response.data]);
+    });
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
@@ -26,13 +28,13 @@ const App = () => {
       ...prevState,
       { name: data.name, number: data.number },
     ]);
-    setData({ name: '', number: '' });
+    setData({ name: "", number: "" });
   };
 
   const handleChange =
     (name) =>
     ({ target: { value } }) => {
-      if (name === 'search') setSearch(value);
+      if (name === "search") setSearch(value);
       setData((prevState) => ({ ...prevState, [name]: value }));
     };
 
