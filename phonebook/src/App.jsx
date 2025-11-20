@@ -14,7 +14,7 @@ const App = () => {
     getPersons().then((response) => {
       setPersons([...response.data]);
     });
-  }, [persons]);
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
@@ -39,12 +39,11 @@ const App = () => {
   };
 
   const deleteName = ({ id, name }) => {
-    confirm(`Delete ${name} ?`);
+    if (!window.confirm(`Delete ${name} ?`)) return;
 
-    deletePerson(id).then((response) => {
-      const personIndex = persons.findIndex((e) => e.id === response.data.id);
-      setPersons((prevState) => [...prevState.splice(personIndex, 1)]);
-    });
+    deletePerson(id).then(({ data: { id } }) =>
+      setPersons((prevState) => prevState.filter((person) => person.id !== id))
+    );
   };
 
   const handleChange =
