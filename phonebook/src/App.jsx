@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import { getPersons, createPerson } from "./services/persons";
+import { getPersons, createPerson, deletePerson } from "./services/persons";
 import "./styles.css";
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
     getPersons().then((response) => {
       setPersons([...response.data]);
     });
-  }, []);
+  }, [persons]);
 
   const addName = (event) => {
     event.preventDefault();
@@ -24,14 +24,27 @@ const App = () => {
       return;
     }
 
-    createPerson(data).then((reponse) =>
+    createPerson(data).then((reponse) => {
       setPersons((prevState) => [
         ...prevState,
-        { name: reponse.data.name, number: reponse.data.number },
-      ])
-    );
+        {
+          name: reponse.data.name,
+          number: reponse.data.number,
+          id: reponse.data.id,
+        },
+      ]);
+    });
 
     setData({ name: "", number: "" });
+  };
+
+  const deleteName = ({ id, name }) => {
+    confirm(`Delete ${name} ?`);
+
+    deletePerson(id).then((response) => {
+      const personIndex = persons.findIndex((e) => e.id === response.data.id);
+      setPersons((prevState) => [...prevState.splice(personIndex, 1)]);
+    });
   };
 
   const handleChange =
@@ -48,7 +61,7 @@ const App = () => {
       <h2>Add new</h2>
       <PersonForm data={data} handleChange={handleChange} addName={addName} />
       <h2>Numbers</h2>
-      <Persons search={search} persons={persons} />
+      <Persons search={search} persons={persons} deleteName={deleteName} />
     </>
   );
 };
