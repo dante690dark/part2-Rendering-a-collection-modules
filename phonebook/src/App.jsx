@@ -9,6 +9,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [data, setData] = useState({ name: "", number: "" });
   const [search, setSearch] = useState("");
+  const [isClick, setisClick] = useState(false);
 
   useEffect(() => {
     getPersons().then((response) => {
@@ -38,7 +39,7 @@ const App = () => {
     setData({ name: "", number: "" });
   };
 
-  const deleteName = ({ id, name }) => {
+  const deleteName = (id, name) => {
     if (!window.confirm(`Delete ${name} ?`)) return;
 
     deletePerson(id).then(({ data: { id } }) =>

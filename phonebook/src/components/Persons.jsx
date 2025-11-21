@@ -5,33 +5,25 @@ const Persons = ({ search, persons, deleteName }) => {
   return (
     <ul>
       {search
-        ? persons.reduce((arr, { name, number, id }) => {
+        ? persons.reduce((arr, person) => {
             if (
-              Object.values({ name, number }).some((text) =>
+              Object.values(person).some((text) =>
                 text.toLowerCase().includes(search.toLowerCase())
               )
             )
               return [
                 ...arr,
                 <Person
-                  key={name}
-                  name={name}
-                  number={number}
-                  id={id}
+                  key={person.name}
+                  person={person}
                   deleteName={deleteName}
                 />,
               ];
 
             return arr;
           }, [])
-        : persons.map(({ name, number, id }) => (
-            <Person
-              key={name}
-              name={name}
-              number={number}
-              id={id}
-              deleteName={deleteName}
-            />
+        : persons.map((person) => (
+            <Person key={person.name} person={person} deleteName={deleteName} />
           ))}
     </ul>
   );
