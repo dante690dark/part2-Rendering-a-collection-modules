@@ -9,7 +9,6 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [data, setData] = useState({ name: "", number: "" });
   const [search, setSearch] = useState("");
-  const [isClick, setisClick] = useState(false);
 
   useEffect(() => {
     getPersons().then((response) => {
