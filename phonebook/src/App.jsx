@@ -38,12 +38,21 @@ const App = () => {
     setData({ name: "", number: "" });
   };
 
-  const deleteName = (id, name) => {
-    if (!window.confirm(`Delete ${name} ?`)) return;
+  const deleteName = (id, name, setClick) => {
+    setClick(true);
 
-    deletePerson(id).then(({ data: { id } }) =>
-      setPersons((prevState) => prevState.filter((person) => person.id !== id))
-    );
+    setTimeout(() => {
+      if (!window.confirm(`Delete ${name} ?`)) {
+        setClick(false);
+        return;
+      }
+
+      deletePerson(id).then(({ data: { id } }) =>
+        setPersons((prevState) =>
+          prevState.filter((person) => person.id !== id)
+        )
+      );
+    }, 0);
   };
 
   const handleChange =

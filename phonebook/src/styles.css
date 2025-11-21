@@ -10,7 +10,12 @@ div {
 }
 
 button {
+  margin-left: 2px;
   background: white;
   border: 1px solid grey;
   border-radius: 5px;
+}
+
+.bgBlue {
+  background: #4385f4;
 }
