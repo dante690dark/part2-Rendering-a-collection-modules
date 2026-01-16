@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import { getPersons, createPerson, deletePerson } from "./services/persons";
+import {
+  getPersons,
+  createPerson,
+  deletePerson,
+  updatePerson,
+} from "./services/persons";
 import "./styles.css";
 
 const App = () => {
@@ -18,9 +23,29 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
+    const findPerson = persons.find((person) => person.name === data.name);
 
-    if (persons.some((person) => person.name === data.name)) {
-      alert(`${data.name} is already added to phonebook`);
+    if (findPerson) {
+      if (
+        window.confirm(
+          `${data.name} is already added to phonebook, replace the old number with a new one`
+        )
+      ) {
+        updatePerson(findPerson.id, {
+          ...findPerson,
+          number: data.number,
+        })
+          .then(({ data }) =>
+            setPersons((prevState) =>
+              prevState.map((person) => (person.id === data.id ? data : person))
+            )
+          )
+          .catch((error) => console.error(error));
+        setData({ name: "", number: "" });
+        return;
+      }
+
+      setData({ name: "", number: "" });
       return;
     }
 
