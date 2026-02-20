@@ -51,7 +51,7 @@ const App = () => {
           number: data.number,
         })
           .then(({ data }) => {
-            setMessage(`Update ${data.name}`);
+            setMessage(`Update ${data.name}'s number`);
             setPersons((prevState) =>
               prevState.map((person) =>
                 person.id === data.id ? data : person,
