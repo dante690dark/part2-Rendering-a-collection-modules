@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import {
   getPersons,
   createPerson,
@@ -14,6 +15,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [data, setData] = useState({ name: "", number: "" });
   const [search, setSearch] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     getPersons().then((response) => {
@@ -24,11 +26,12 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault();
     const findPerson = persons.find((person) => person.name === data.name);
+    const formattedName = data.name.at(0).toUpperCase() + data.name.slice(1);
 
     if (findPerson) {
       if (
         window.confirm(
-          `${data.name} is already added to phonebook, replace the old number with a new one`
+          `${data.name} is already added to phonebook, replace the old number with a new one`,
         )
       ) {
         updatePerson(findPerson.id, {
@@ -37,8 +40,10 @@ const App = () => {
         })
           .then(({ data }) =>
             setPersons((prevState) =>
-              prevState.map((person) => (person.id === data.id ? data : person))
-            )
+              prevState.map((person) =>
+                person.id === data.id ? data : person,
+              ),
+            ),
           )
           .catch((error) => console.error(error));
         setData({ name: "", number: "" });
@@ -49,7 +54,11 @@ const App = () => {
       return;
     }
 
-    createPerson(data).then((reponse) => {
+    createPerson({ ...data, name: formattedName }).then((reponse) => {
+      setMessage("Add people");
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
       setPersons((prevState) => [
         ...prevState,
         {
@@ -63,6 +72,7 @@ const App = () => {
     setData({ name: "", number: "" });
   };
 
+  //TODO: mirar si este delete se puede pasar al componente Person
   const deleteName = (id, name, setClick) => {
     setClick(true);
 
@@ -74,8 +84,8 @@ const App = () => {
 
       deletePerson(id).then(({ data: { id } }) =>
         setPersons((prevState) =>
-          prevState.filter((person) => person.id !== id)
-        )
+          prevState.filter((person) => person.id !== id),
+        ),
       );
     }, 0);
   };
@@ -90,6 +100,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      {message ? <Notification message={message} /> : null}
       <Filter search={search} handleChange={handleChange} />
       <h2>Add new</h2>
       <PersonForm data={data} handleChange={handleChange} addName={addName} />

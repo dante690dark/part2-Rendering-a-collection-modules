@@ -19,3 +19,13 @@ button {
 .bgBlue {
   background: #4385f4;
 }
+
+.add {
+  color: green;
+  background: lightgrey;
+  padding: 10px;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
