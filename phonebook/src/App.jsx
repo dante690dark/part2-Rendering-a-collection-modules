@@ -15,7 +15,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [data, setData] = useState({ name: "", number: "" });
   const [search, setSearch] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     getPersons().then(({ data }) => {
@@ -51,7 +51,7 @@ const App = () => {
           number: data.number,
         })
           .then(({ data }) => {
-            setMessage(`Update ${data.name}'s number`);
+            setMessage({ name: data.name, type: "update" });
             setPersons((prevState) =>
               prevState.map((person) =>
                 person.id === data.id ? data : person,
@@ -68,7 +68,7 @@ const App = () => {
     }
 
     createPerson({ ...data, name: formattedName }).then(({ data }) => {
-      setMessage(`Add ${data.name}`);
+      setMessage({ name: data.name, type: "success" });
       setTimeout(() => {
         setMessage(null);
       }, 5000);
@@ -85,7 +85,6 @@ const App = () => {
     setData({ name: "", number: "" });
   };
 
-  //TODO: mirar si este delete se puede pasar al componente Person
   const deleteName = (id, name, setClick) => {
     setClick(true);
 
@@ -95,11 +94,16 @@ const App = () => {
         return;
       }
 
-      deletePerson(id).then(({ data: { id } }) =>
-        setPersons((prevState) =>
-          prevState.filter((person) => person.id !== id),
-        ),
-      );
+      deletePerson(id)
+        .then(({ data: { id } }) =>
+          setPersons((prevState) =>
+            prevState.filter((person) => person.id !== id),
+          ),
+        )
+        .catch((error) => {
+          console.error(error);
+          setMessage({ name: data.name, type: "error" });
+        });
     }, 0);
   };
 
@@ -113,7 +117,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      {message ? <Notification message={message} /> : null}
+      {message && <Notification message={message} />}
       <Filter search={search} handleChange={handleChange} />
       <h2>Add new</h2>
       <PersonForm data={data} handleChange={handleChange} addName={addName} />
