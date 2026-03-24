@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAllCountries } from "../services/country";
+import { getAllCountries, getCountry } from "../services/country";
 import Country from "./components/Country";
+import "./styles.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -8,29 +9,37 @@ function App() {
 
   useEffect(() => {
     getAllCountries().then(({ data }) => {
-      setCountries([...data]);
-      setFilterCountries([...data]);
+      setCountries(data);
     });
   }, []);
 
-  //NOTE: this handleChage is for filter countries
   const handleChange = ({ target: { value } }) => {
-    const collection = countries.filter(({ name: { common: filtered } }) =>
-      filtered.toLowerCase().includes(value.toLowerCase()),
-    );
-    if (collection) {
-      setFilterCountries([...collection]);
+    if (value) {
+      const collection = countries.filter(({ name: { common: filtered } }) =>
+        filtered.toLowerCase().includes(value.toLowerCase()),
+      );
+
+      if (collection.length === 1) {
+        const [
+          {
+            name: { common },
+          },
+        ] = collection;
+        getCountry(common).then(({ data }) => setFilterCountries([data]));
+      }
+
+      setFilterCountries(collection);
       return;
     }
 
-    setFilterCountries([...countries]);
+    setFilterCountries([]);
     return;
   };
 
   return (
     <>
       <span>find countries</span>{" "}
-      <input type="text" onChange={handleChange} name="" id="" />
+      <input type="text" onChange={handleChange} name="filtered" />
       <Country filterCountries={filterCountries} />
     </>
   );
