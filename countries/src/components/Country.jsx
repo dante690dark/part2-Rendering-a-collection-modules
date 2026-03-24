@@ -8,30 +8,42 @@ const Country = ({ filterCountries }) => {
   }
 
   if (filterCountries.length === 1) {
-    const [data] = filterCountries;
-
-    const languages = Object.values(data.languages);
+    const [
+      {
+        name: { common },
+        capital,
+        area,
+        languages,
+        flags: { png, alt },
+      },
+    ] = filterCountries;
+    const values = Object.values(languages);
     return (
       <>
-        <h1>{data.name.common}</h1>
-        <div>{data.capital[0]}</div>
-        <div>{data.area}</div>
+        <h1>{common}</h1>
+        <div>{capital[0]}</div>
+        <div>{area}</div>
         <h2>Languages</h2>
         <ul>
-          {languages.map((language) => (
+          {values.map((language) => (
             <li key={language}>{language}</li>
           ))}
         </ul>
-        <img src={data.flags.png} alt={data.flags.alt} />
+        <img src={png} alt={alt} />
       </>
     );
   }
 
   return (
     <>
-      {filterCountries.map((country) => (
-        <div key={country.name.common}>{country.name.common}</div>
-      ))}
+      {filterCountries.map(({ name: { common } }) => {
+        return (
+          <div className="container-country" key={common}>
+            <span>{common}</span>
+            <button type="button">Show</button>
+          </div>
+        );
+      })}
     </>
   );
 };

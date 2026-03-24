@@ -2,6 +2,11 @@
   display: block;
 }
 
+.container-country {
+  display: flex;
+  gap: 6px;
+}
+
 img {
   height: auto;
   width: 206px;
