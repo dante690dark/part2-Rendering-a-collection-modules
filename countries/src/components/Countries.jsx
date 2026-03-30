@@ -3,10 +3,12 @@ import { getCountry } from "../../services/country";
 import Country from "./Country";
 
 const Countries = ({ filterCountries }) => {
-  const [countryDetail, setCountryDetail] = useState([]);
+  const [countryDetail, setCountryDetail] = useState({});
   const handleClick = (common) => {
-    getCountry(common).then(({ data }) => setCountryDetail([data]));
+    getCountry(common).then(({ data }) => setCountryDetail(data));
   };
+
+  if (!filterCountries.length) return;
 
   if (filterCountries.length > 10) {
     return (
@@ -14,7 +16,7 @@ const Countries = ({ filterCountries }) => {
     );
   }
 
-  if (countryDetail.length === 1) {
+  if (Object.keys(countryDetail).length) {
     return <Country countryDetail={countryDetail} />;
   }
 

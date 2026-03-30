@@ -1,15 +1,13 @@
 import React from "react";
 
 const Country = ({ countryDetail }) => {
-  const [
-    {
-      name: { common },
-      capital,
-      area,
-      languages,
-      flags: { png, alt },
-    },
-  ] = countryDetail;
+  const {
+    name: { common },
+    capital,
+    area,
+    languages,
+    flags: { png, alt },
+  } = countryDetail;
   const values = Object.values(languages);
   return (
     <>
