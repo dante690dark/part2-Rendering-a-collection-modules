@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAllCountries, getCountry } from "../services/country";
-import Country from "./components/Country";
+import { getAllCountries } from "../services/country";
+import Countries from "./components/Countries";
 import "./styles.css";
 
 function App() {
@@ -19,15 +19,6 @@ function App() {
         filtered.toLowerCase().includes(value.toLowerCase()),
       );
 
-      if (collection.length === 1) {
-        const [
-          {
-            name: { common },
-          },
-        ] = collection;
-        getCountry(common).then(({ data }) => setFilterCountries([data]));
-      }
-
       setFilterCountries(collection);
       return;
     }
@@ -40,7 +31,7 @@ function App() {
     <>
       <span>find countries</span>{" "}
       <input type="text" onChange={handleChange} name="filtered" />
-      <Country filterCountries={filterCountries} />
+      <Countries filterCountries={filterCountries} />
     </>
   );
 }
