@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getCountry } from "../../services/country";
 import Country from "./Country";
 
@@ -8,7 +8,10 @@ const Countries = ({ filterCountries }) => {
     getCountry(common).then(({ data }) => setCountryDetail(data));
   };
 
-  if (!filterCountries.length) return;
+  useEffect(() => {
+    const id = setTimeout(() => setCountryDetail({}), 0);
+    return () => clearTimeout(id);
+  }, [filterCountries]);
 
   if (filterCountries.length > 10) {
     return (

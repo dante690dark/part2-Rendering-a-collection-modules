@@ -3,9 +3,6 @@ import { sendCountry } from "../../services/country";
 
 const Country = ({ countryDetail }) => {
   const api_key = import.meta.env.VITE_SOME_KEY;
-  console.log(api_key);
-
-  // const [prueba, setPrueba] = useState({});
 
   const {
     name: { common },
