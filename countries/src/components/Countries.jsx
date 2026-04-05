@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCountry } from "../../services/country";
 import Country from "./Country";
 
 const Countries = ({ filterCountries }) => {
   const [countryDetail, setCountryDetail] = useState({});
+
   const handleClick = (common) => {
     getCountry(common).then(({ data }) => setCountryDetail(data));
   };

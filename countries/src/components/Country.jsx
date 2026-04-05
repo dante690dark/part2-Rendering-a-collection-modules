@@ -1,9 +1,6 @@
-import React, { useEffect } from "react";
-import { sendCountry } from "../../services/country";
+import Weather from "./Weather";
 
 const Country = ({ countryDetail }) => {
-  const api_key = import.meta.env.VITE_SOME_KEY;
-
   const {
     name: { common },
     capital,
@@ -12,15 +9,8 @@ const Country = ({ countryDetail }) => {
     flags: { png, alt },
     latlng: [latitude, longitude],
   } = countryDetail;
-  const values = Object.values(languages);
 
-  useEffect(() => {
-    sendCountry(latitude, longitude, api_key)
-      .then(({ data }) => {
-        console.log("si funciona", data);
-      })
-      .catch((err) => console.log("no sirve", err));
-  }, [latitude, longitude, api_key]);
+  const values = Object.values(languages);
 
   return (
     <>
@@ -34,6 +24,7 @@ const Country = ({ countryDetail }) => {
         ))}
       </ul>
       <img src={png} alt={alt} />
+      <Weather capital={capital} latitude={latitude} longitude={longitude} />
     </>
   );
 };
