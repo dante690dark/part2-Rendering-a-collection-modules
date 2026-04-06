@@ -92,7 +92,7 @@ root/
 
 ⚠️ API Key Required:
 
-For Countries project fetches weather data from an external API. You must subscribe to the free plan (version 3.0), which has a very limited number of requests.
+For Countries project fetches weather data from an external API. You must subscribe at least to the free plan (version 3.0), which has a very limited number of requests, for more requests yo can explore others plans
 
 Setup Example:
 
