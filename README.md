@@ -57,8 +57,10 @@ npm run dev
 
 The phonebook project uses a fake REST API powered by JSON Server.
 
-Important
+Important:
+
 • db.json is only used by the phonebook project
+
 • The backend must be running to add, delete, or update contacts
 
 Run the backend server
