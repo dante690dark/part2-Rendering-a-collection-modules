@@ -3,21 +3,27 @@ import { sendCountry } from "../../services/country";
 
 const Weather = ({ capital, latitude, longitude }) => {
   const [weather, setWeather] = useState({});
+  const [temperature, setTemperature] = useState("");
 
   const api_key = import.meta.env.VITE_SOME_KEY;
 
   useEffect(() => {
     sendCountry(latitude, longitude, api_key)
       .then(({ data }) => {
+        setTemperature(
+          Number(weather.current?.temp - 273.15)
+            .toFixed(1)
+            .toString(),
+        );
         setWeather(data);
       })
-      .catch((err) => console.log("no sirve", err));
-  }, [latitude, longitude, api_key]);
+      .catch((error) => console.error(error));
+  }, [latitude, longitude, weather, api_key]);
 
   return (
     <>
       <h2>Weather in {capital}</h2>
-      <div>Temperature {weather.current?.temp} Celsius</div>
+      <div>Temperature {temperature} Celsius</div>
       <img
         src={`https://openweathermap.org/payload/api/media/file/${weather.current?.weather[0]?.icon}.png`}
         alt="weather icon"
