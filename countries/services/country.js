@@ -4,9 +4,9 @@ const URL_WEATHER = "https://api.openweathermap.org/data/3.0/onecall?";
 
 const getAllCountries = () => axios.get(`${URL_COUNTRY}/all`);
 const getCountry = (data) => axios.get(`${URL_COUNTRY}/name/${data}`);
-const sendCountry = (latitude, longitude, api_key) =>
+const sendCountry = (latitude, longitude, API_KEY) =>
   axios.get(
-    `${URL_WEATHER}lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=${api_key}`,
+    `${URL_WEATHER}lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=${API_KEY}`,
   );
 
 export { getAllCountries, getCountry, sendCountry };
