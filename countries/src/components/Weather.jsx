@@ -5,10 +5,10 @@ const Weather = ({ capital, latitude, longitude }) => {
   const [weather, setWeather] = useState({});
   const [temperature, setTemperature] = useState("");
 
-  const api_key = import.meta.env.VITE_SOME_KEY;
+  const API_KEY = import.meta.env.VITE_SOME_KEY;
 
   useEffect(() => {
-    sendCountry(latitude, longitude, api_key)
+    sendCountry(latitude, longitude, API_KEY)
       .then(({ data }) => {
         setTemperature(
           Number(weather.current?.temp - 273.15)
@@ -18,7 +18,7 @@ const Weather = ({ capital, latitude, longitude }) => {
         setWeather(data);
       })
       .catch((error) => console.error(error));
-  }, [latitude, longitude, weather, api_key]);
+  }, [latitude, longitude, weather, API_KEY]);
 
   return (
     <>
